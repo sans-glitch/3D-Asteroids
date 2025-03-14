@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://dv8yfq15n1f6d"]
+
+[ext_resource type="Script" path="res://scripts/asteroid.gd" id="1_srohw"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5evfo"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_q4dk0"]
+resource_local_to_scene = true
+radius = 12.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xuf4"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ejv5v"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_1xuf4")
+radius = 12.0
+height = 24.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2uqfk"]
+cull_mode = 1
+shading_mode = 0
+grow = true
+grow_amount = 0.13
+
+[sub_resource type="SphereMesh" id="SphereMesh_1w633"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_2uqfk")
+radius = 12.0
+height = 24.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_p1655"]
+resource_local_to_scene = true
+radius = 13.0
+
+[node name="Asteroid" type="RigidBody3D" groups=["Asteroid"]]
+disable_mode = 2
+mass = 100.0
+physics_material_override = SubResource("PhysicsMaterial_5evfo")
+gravity_scale = 0.0
+script = ExtResource("1_srohw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_q4dk0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ejv5v")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_1w633")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="." groups=["Asteroid"]]
+
+[node name="Hitbox" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("SphereShape3D_p1655")
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

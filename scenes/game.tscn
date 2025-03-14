@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3 uid="uid://ba40k780g8i7c"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_101vw"]
+[ext_resource type="PackedScene" uid="uid://cs5kro7vr12bq" path="res://scenes/ship.tscn" id="1_i1yvo"]
+[ext_resource type="Texture2D" uid="uid://bfht5dfwdama1" path="res://icon.svg" id="2_kui42"]
+[ext_resource type="PackedScene" uid="uid://dv8yfq15n1f6d" path="res://scenes/asteroid.tscn" id="3_4amn0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_r65k6"]
+size = Vector2(200, 200)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kee4j"]
+albedo_texture = ExtResource("2_kui42")
+
+[sub_resource type="Environment" id="Environment_cgqt2"]
+background_mode = 1
+background_energy_multiplier = 0.0
+
+[node name="Game" type="Node3D" groups=["Game"]]
+script = ExtResource("1_101vw")
+asteroid = ExtResource("3_4amn0")
+
+[node name="Ship" parent="." instance=ExtResource("1_i1yvo")]
+transform = Transform3D(1, 0, 0, 0, -8.9407e-08, -1, 0, 1, -8.9407e-08, 0, 6, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 0, 1, -4.37114e-08, -1, 0, 1.91069e-15, 0, 0, -0.142371)
+visible = false
+mesh = SubResource("PlaneMesh_r65k6")
+surface_material_override/0 = SubResource("StandardMaterial3D_kee4j")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cgqt2")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
