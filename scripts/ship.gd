@@ -55,8 +55,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		rotate_object_local(Vector3(1, 0, 0), -1 * 0.01)
 	if Input.is_action_pressed("ui_down"):
 		rotate_object_local(Vector3(1, 0, 0), 1 * 0.01)
-	if Input.is_action_pressed("shoot"):
-		shoot()
 	if event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	elif event.is_action_pressed("ui_cancel"):
@@ -69,12 +67,15 @@ func _unhandled_input(event: InputEvent) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if health < 1:
+		AudioManager.play("res://assets/sounds/explosion.wav")
 		get_tree().reload_current_scene()
 	var input_dir := Vector3.ZERO
 	if Input.is_action_pressed("accelerate"):
 		input_dir = Vector3(0, -1, 0)
 	if Input.is_action_pressed("back"):
 		velocity = velocity - velocity * 0.1
+	if Input.is_action_pressed("shoot"):
+		shoot()
 	#if Input.is_action_pressed("shoot"):
 		#shoot()
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -84,10 +85,13 @@ func _process(delta: float) -> void:
 	
 	
 func shoot():
+	if not $ShootTimer.is_stopped():
+		return
 	var tmp_projectile = projectile.instantiate()
 	tmp_projectile.position = self.position
 	tmp_projectile.rotation = self.rotation
 	add_sibling(tmp_projectile)
+	$ShootTimer.start()
 	
 func crash(asteroid : Node3D):
 	var bump = (global_position - asteroid.global_position).normalized() * 50
@@ -95,6 +99,7 @@ func crash(asteroid : Node3D):
 	if $IFrames.time_left > 0:
 		print($IFrames.time_left)
 		return
+	AudioManager.play("res://assets/sounds/hit.wav")
 	health -= 1
 	$IFrames.start()
 	#position += bump
