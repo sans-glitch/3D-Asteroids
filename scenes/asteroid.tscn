@@ -26,7 +26,7 @@ rings = 3
 cull_mode = 1
 shading_mode = 0
 grow = true
-grow_amount = 0.13
+grow_amount = 0.25
 
 [sub_resource type="SphereMesh" id="SphereMesh_1w633"]
 resource_local_to_scene = true
@@ -51,10 +51,10 @@ script = ExtResource("1_srohw")
 visible = false
 shape = SubResource("SphereShape3D_q4dk0")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="BlackMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_ejv5v")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="OutlineMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_1w633")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="." groups=["Asteroid"]]
@@ -64,8 +64,6 @@ aabb = AABB(-12, -12, -12, 24, 24, 24)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("SphereShape3D_p1655")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

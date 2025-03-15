@@ -11,7 +11,11 @@ var health
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	health = 3
+	$"..".starting.connect(_on_start.bind())
 	pass # Replace with function body.
+
+func _on_start():
+	$IFrames.start()
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("ui_left"):
@@ -43,7 +47,6 @@ func _physics_process(delta: float) -> void:
 	var bodies = get_overlapping_bodies()
 	for body in bodies:
 		if body.is_in_group("Asteroid"):
-			print("Crash")
 			crash(body)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -68,6 +71,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if health < 1:
 		AudioManager.play("res://assets/sounds/explosion.wav")
+		GameState.reset(5)
 		get_tree().reload_current_scene()
 	var input_dir := Vector3.ZERO
 	if Input.is_action_pressed("accelerate"):
@@ -97,7 +101,6 @@ func crash(asteroid : Node3D):
 	var bump = (global_position - asteroid.global_position).normalized() * 50
 	velocity = bump
 	if $IFrames.time_left > 0:
-		print($IFrames.time_left)
 		return
 	AudioManager.play("res://assets/sounds/hit.wav")
 	health -= 1

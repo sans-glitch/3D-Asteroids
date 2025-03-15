@@ -25,3 +25,7 @@ func increase_asteroid_count(amount : int):
 
 func increase_difficulty(amount : int):
 	difficulty += amount
+	
+func reset(start_difficulty : int):
+	score = 0
+	difficulty = start_difficulty

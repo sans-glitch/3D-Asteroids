@@ -5,10 +5,13 @@ var deactivated = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	AudioManager.play("res://assets/sounds/laserShoot.wav")
+	visible = false
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if $Timer.time_left <= 4.99:
+		visible = true
 	move_and_collide(-transform.basis.z * speed * delta)
 #
 #func _on_area_3d_body_entered(body: RigidBody3D) -> void:

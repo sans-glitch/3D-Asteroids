@@ -12,6 +12,7 @@ func _ready() -> void:
 	contact_monitor = true
 	set_size(radius)
 	linear_velocity = velocity * direction
+	rotate(Vector3(1, 0, 0), randf_range(-PI, PI))
 	apply_torque(Vector3(randf_range(-1, 1),randf_range(-1, 1),randf_range(-1, 1)).normalized() * 100000)
 
 func set_direction(dir : Vector3):
@@ -59,16 +60,19 @@ func split():
 	if radius <= 6:
 		GameState.decrease_asteroid_count()
 		return
-	print("split")
 	get_tree().root.get_child(2).spawn_child_asteroids(position, radius/2)
 
 func set_size(radius : int):
 	self.radius = radius
 	$CollisionShape3D.shape.radius = radius
-	$MeshInstance3D.mesh.radius = radius
-	$MeshInstance3D.mesh.height = 2 * radius
-	$MeshInstance3D2.mesh.radius = radius
-	$MeshInstance3D2.mesh.height = 2 * radius
+	$BlackMesh.mesh.radius = radius
+	$BlackMesh.mesh.height = 2 * radius
+	#$BlackMesh.mesh.radial_segments = 20 * (radius/24)
+	#$BlackMesh.mesh.rings = 12 * (radius/24)
+	$OutlineMesh.mesh.radius = radius
+	$OutlineMesh.mesh.height = 2 * radius
+	#$OutlineMesh.mesh.radial_segments = 20 * (radius/24)
+	#$OutlineMesh.mesh.rings = 12 * (radius/24)
 	$Hitbox/CollisionShape3D.shape.radius = radius + 1
 	$VisibleOnScreenNotifier3D.aabb = AABB(Vector3(-radius, -radius, -radius), Vector3(radius* 2, radius*2, radius*2))
 	mass = 100 * radius / 24

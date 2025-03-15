@@ -3,7 +3,7 @@ extends Node3D
 @onready var timer: Timer = $Timer
 @export var asteroid : PackedScene
 @onready var ship: Area3D = $Ship
-
+signal starting
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#$WorldEnvironment.set_bg_energy_multiplier(0)
@@ -14,7 +14,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
 	pass
 
 
@@ -34,6 +33,7 @@ func respawn_asteroids():
 	GameState.set_asteroids_num(GameState.difficulty)
 	for i in GameState.difficulty:
 		spawn_asteroid()
+	starting.emit()
 
 func spawn_child_asteroids(position : Vector3, new_size : int):
 	var ast1 = asteroid.instantiate()
