@@ -19,6 +19,8 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_1xuf4")
 radius = 12.0
 height = 24.0
+radial_segments = 5
+rings = 3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2uqfk"]
 cull_mode = 1
@@ -31,6 +33,8 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_2uqfk")
 radius = 12.0
 height = 24.0
+radial_segments = 5
+rings = 3
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_p1655"]
 resource_local_to_scene = true
@@ -44,6 +48,7 @@ gravity_scale = 0.0
 script = ExtResource("1_srohw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+visible = false
 shape = SubResource("SphereShape3D_q4dk0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -53,11 +58,14 @@ mesh = SubResource("SphereMesh_ejv5v")
 mesh = SubResource("SphereMesh_1w633")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="." groups=["Asteroid"]]
+aabb = AABB(-12, -12, -12, 24, 24, 24)
 
 [node name="Hitbox" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("SphereShape3D_p1655")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]
