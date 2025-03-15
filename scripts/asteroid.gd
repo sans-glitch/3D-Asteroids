@@ -12,6 +12,7 @@ func _ready() -> void:
 	contact_monitor = true
 	set_size(radius)
 	linear_velocity = velocity * direction
+	apply_torque(Vector3(randf_range(-1, 1),randf_range(-1, 1),randf_range(-1, 1)).normalized() * 100000)
 
 func set_direction(dir : Vector3):
 	direction = dir
@@ -53,12 +54,13 @@ func _on_visible_on_screen_notifier_3d_screen_exited() -> void:
 	is_visible = false
 
 func split():
+	AudioManager.play("res://assets/sounds/explosion.wav")
 	queue_free()
 	if radius <= 6:
 		GameState.decrease_asteroid_count()
 		return
 	print("split")
-	get_tree().root.get_child(1).spawn_child_asteroids(position, radius/2)
+	get_tree().root.get_child(2).spawn_child_asteroids(position, radius/2)
 
 func set_size(radius : int):
 	self.radius = radius
@@ -68,20 +70,16 @@ func set_size(radius : int):
 	$MeshInstance3D2.mesh.radius = radius
 	$MeshInstance3D2.mesh.height = 2 * radius
 	$Hitbox/CollisionShape3D.shape.radius = radius + 1
+	$VisibleOnScreenNotifier3D.aabb = AABB(Vector3(-radius, -radius, -radius), Vector3(radius* 2, radius*2, radius*2))
 	mass = 100 * radius / 24
 
-#func _on_mesh_instance_3d_tree_exited() -> void:
-	#if radius == 3:
-		#GameState.decrease_asteroid_count()
-		#return
-	#await(self.ready)
-	#print("split")
-	#get_tree().root.get_child(1).spawn_child_asteroids(position, radius/2)
-
-#
-#func _on_hitbox_body_entered(body: RigidBody3D) -> void:
-	#print("boom?")
-	#if body.is_in_group("Projectile"):
-		#print("boom")
-		#body.queue_free()
-		#split()
+#func create_asteroid(num_vertices : int):
+	#var a_mesh : ArrayMesh
+	#var vertices := PackedVector3Array(
+		#
+	#)
+	#for i in num_vertices:
+		#vertecies.append(Vector3(randf_range(-1, 10), randf_range(-1, 10), randf_range(-1, 10)).normalized())
+	#var mesh : MeshInstance3D
+	#Geometry3D.get_triangle_barycentric_coords()
+	#
