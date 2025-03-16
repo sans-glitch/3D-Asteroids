@@ -18,8 +18,7 @@ func set_asteroids_num(num : int):
 
 func decrease_asteroid_count():
 	num_asteroids -= 1
-	score += 1
-	print("num left " + str(num_asteroids))
+	#score += 1
 func increase_asteroid_count(amount : int):
 	num_asteroids += amount
 
@@ -29,3 +28,5 @@ func increase_difficulty(amount : int):
 func reset(start_difficulty : int):
 	score = 0
 	difficulty = start_difficulty
+func increase_score(amount : int):
+	score += amount

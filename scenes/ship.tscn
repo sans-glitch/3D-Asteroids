@@ -66,7 +66,6 @@ script = ExtResource("4_62p8b")
 offset_left = 17.0
 offset_right = 94.0
 offset_bottom = 88.0
-text = "3"
 label_settings = SubResource("LabelSettings_dsplg")
 script = ExtResource("6_xjlko")
 

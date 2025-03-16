@@ -56,9 +56,11 @@ func _on_visible_on_screen_notifier_3d_screen_exited() -> void:
 
 func split():
 	AudioManager.play("res://assets/sounds/explosion.wav")
+	GameState.increase_score(get_hit_score())
 	queue_free()
 	if radius <= 6:
 		GameState.decrease_asteroid_count()
+		
 		return
 	get_tree().root.get_child(2).spawn_child_asteroids(position, radius/2)
 
@@ -76,6 +78,13 @@ func set_size(radius : int):
 	$Hitbox/CollisionShape3D.shape.radius = radius + 1
 	$VisibleOnScreenNotifier3D.aabb = AABB(Vector3(-radius, -radius, -radius), Vector3(radius* 2, radius*2, radius*2))
 	mass = 100 * radius / 24
+
+func get_hit_score():
+	if radius == 24:
+		return 20
+	elif radius == 12:
+		return 50
+	return 100
 
 #func create_asteroid(num_vertices : int):
 	#var a_mesh : ArrayMesh

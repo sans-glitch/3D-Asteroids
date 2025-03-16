@@ -77,7 +77,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("accelerate"):
 		input_dir = Vector3(0, -1, 0)
 	if Input.is_action_pressed("back"):
-		velocity = velocity - velocity * 0.1
+		velocity = velocity - velocity * 0.05
 	if Input.is_action_pressed("shoot"):
 		shoot()
 	#if Input.is_action_pressed("shoot"):
@@ -92,6 +92,7 @@ func shoot():
 	if not $ShootTimer.is_stopped():
 		return
 	var tmp_projectile = projectile.instantiate()
+	tmp_projectile.linear_velocity = velocity
 	tmp_projectile.position = self.position
 	tmp_projectile.rotation = self.rotation
 	add_sibling(tmp_projectile)
@@ -100,6 +101,7 @@ func shoot():
 func crash(asteroid : Node3D):
 	var bump = (global_position - asteroid.global_position).normalized() * 50
 	velocity = bump
+	asteroid.split()
 	if $IFrames.time_left > 0:
 		return
 	AudioManager.play("res://assets/sounds/hit.wav")
